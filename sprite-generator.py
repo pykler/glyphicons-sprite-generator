@@ -71,13 +71,13 @@ COLUMNS = 50
 CELL_SIZE = ICON_SIZE[0] + 10, ICON_SIZE[1] + 10
 CELL_OFFSET = 5
 
-BASE_PATH = os.path.join(os.pathsep, ['glyphicons', 'png', 'glyphicons'])
-ICON_NAME = re.compile(BASE_PATH + '_\d{3}_([\w_@\+\-]+)\.png')
+BASE_PATH = os.path.join('glyphicons', 'png', 'glyphicons')
+ICON_NAME = re.compile(re.escape(BASE_PATH) + r'-\d{1,3}-([\w_@\+\-]+)\.png')
 
-SPRITE_CSS = os.path.join(os.pathsep, ['sprites', 'glyphicons.css'])
-SPRITE_FILE = os.path.join(os.pathsep, ['sprites', 'glyphicons.png'])
-SPRITE_WHITE_FILE = os.path.join(os.pathsep, ['sprites', 'glyphicons-white.png'])
-SPRITE_HTML = os.path.join(os.pathsep, ['sprites', 'glyphicons.html'])
+SPRITE_CSS = os.path.join('sprites', 'glyphicons.css')
+SPRITE_FILE = os.path.join('sprites', 'glyphicons.png')
+SPRITE_WHITE_FILE = os.path.join('sprites', 'glyphicons-white.png')
+SPRITE_HTML = os.path.join('sprites', 'glyphicons.html')
 
 CSS_TEMPLATE = """[class^="icon-"],
 [class*=" icon-"] {
@@ -142,7 +142,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       <p>
         <strong>GLYPHICONS FREE</strong> are released under the Creative Commons Attribution 3.0 Unported (CC BY 3.0). The GLYPHICONS FREE can be used both commercially and for personal use, but you must always add a link to glyphicons.com in a prominent place (e.g. the footer of a website), include the CC-BY license and the reference to glyphicons.com on every page using GLYPHICONS.
       </p>
-      <footer><p>Sprite Generator created by <a href="https://github.com/gmr">Gavin M. Roy</a> (<a href="https://twitter.com/crad">@Crad</a>)</p></footer>
+      <footer><p>Sprite Generator created by <a href="https://github.com/gmr">Gavin M. Roy</a> (<a href="https://twitter.com/crad">@Crad</a>)</p>, Updated by <a href="https://github.com/pykler">Hatem Nassrat</a> (<a href="https://twitter.com/pykler">@Pykler</a>)</footer>
     </div>
   </body>
 </html>"""
@@ -189,12 +189,12 @@ def main():
     global PRO
 
     # Try and guess if this is pro or free
-    directory = os.path.realpath(__file__).split(os.pathsep)[-2]
+    directory = os.path.realpath(__file__).split(os.sep)[-2]
     if directory[-3:] == 'pro' and not PRO:
         print "GLYPHICONS PRO detected, using 2x icons for coloring and sizing"
         PRO = True
 
-    files = glob.glob(os.path.join(os.pathsep, ["glyphicons", "png", "*.png"]))
+    files = glob.glob(os.path.join("glyphicons", "png", "*.png"))
     if not files:
         print "ERROR: Did not find any PNG files, are you sure youre in glyphicons_free/glyphicons directory?"
         sys.exit(-1)
@@ -222,7 +222,7 @@ def main():
         match = ICON_NAME.findall(filename)
 
         # Create the class name
-        name = 'icon-%s' % match[0].replace('_', '-').replace('@2x', '')
+        name = 'icon-%s' % match[0].replace('@2x', '')
 
         # Position in the sprite
         x = (column * CELL_SIZE[0]) + 5
